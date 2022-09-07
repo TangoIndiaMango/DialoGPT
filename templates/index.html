@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>ChatBot</title>
+</head>
+<body>
+    <h1>Flask ChatBot</h1>
+
+    <div>
+        <div id = "chatbox">
+            <p class="botText"><span>Hi! How can I help you today?
+            </span></p>
+        </div>
+        <div id="userInput">
+            <input type="text" id="textInput" name="msg" placeholder="Message">
+            <input type="button" value="Send" type="submit">
+        </div>
+    </div>
+<script>
+    function getBotResponse(){
+var rawText = $("#textInput").val();
+var userHtml = '<p class = "userText"><span>' + rawText + '</span></p>';
+$("#textInput").val("");
+$("#chatbox").append(userHtml);
+document.getElementById('userInput').scrollIntoView({block:'start',behaviour:'smooth'});
+$.get("/get", {msg:rawText }).done(function(data) {
+var botHtml = '<p class ="botText"><span>' + data + '</span></p>';
+$("#chatbox").append(botHtml);
+document.getElementById('userInput').scrollIntoView({block : 'start',behaviour:'smooth'});
+});
+}
+$("#textInput").keypress(function(e) {
+if(e.which == 13) {
+getBotResponse();
+}
+});
+$("#buttonInput").click(function() {
+getBotResponse();
+})
+
+</script>
+</body>
+</html>
